@@ -5,7 +5,10 @@ import java.util.Scanner;
 
 public class TicTacToeGame {
     private static final int HEAD = 1;
-    public enum Player {USER, COMPUTER};
+
+    public enum Player {USER, COMPUTER}
+
+    ;
 
     //Function to create the board
     public static char[] makeBoard() {
@@ -64,10 +67,10 @@ public class TicTacToeGame {
         Scanner userInput = new Scanner(System.in);
         char[] boardValues = makeBoard();
         Player player = whoStarts();
+        System.out.println("Please Choose X or 0");
+        char userValue = userInput.next().charAt(0);
+        char playerValue = playerChoosesXor0(userValue);
         while (playerChances < 10) {
-            System.out.println("Please Choose X or 0");
-            char userValue = userInput.next().charAt(0);
-            char playerValue = playerChoosesXor0(userValue);
             System.out.println("Please Choose the position to make move");
             int userPosition = userInput.nextInt();
             boolean positionFreeCheck = isPositionFree(boardValues, userPosition);
@@ -79,8 +82,8 @@ public class TicTacToeGame {
             player = (player == Player.USER) ? Player.COMPUTER : Player.USER;
             String currentPlayer = (player == Player.USER) ? "User" : "Computer";
             System.out.println("Current Player:- " + currentPlayer);
+            playerValue = (playerValue == 'X') ? '0' : 'X';
             playerChances++;
         }
-
     }
 }
