@@ -131,57 +131,61 @@ public class TicTacToeGame {
 
     //Our main function
     public static void main(String[] args) {
-        System.out.println("Welcome to tic tac toe Workshop Problem");
-        int playerChances = 1, userPosition, computerPosition;
-        boolean checkIfValidMove;
-        char playerValue;
         Scanner userInput = new Scanner(System.in);
-        char[] boardValues = makeBoard();
-        Player player = whoStarts();
-        String currentPlayer = (player == Player.USER) ? "User" : "Computer";
-        if (currentPlayer == "User") {
-            System.out.println("Please Choose X or 0");
-            char userValue = userInput.next().charAt(0);
-            playerValue = playerChoosesXor0(userValue);
-        } else playerValue = computerChooseXor0();
-        while (playerChances < 10) {
+        int gameAgain = 1;
+        while (gameAgain == 1) {
+            System.out.println("Welcome to tic tac toe Workshop Problem");
+            int playerChances = 1, userPosition, computerPosition;
+            boolean checkIfValidMove;
+            char playerValue;
+            char[] boardValues = makeBoard();
+            Player player = whoStarts();
+            String currentPlayer = (player == Player.USER) ? "User" : "Computer";
             if (currentPlayer == "User") {
-                System.out.println("Please Choose the position to make move");
-                userPosition = userInput.nextInt();
-                boolean positionFreeCheck = isPositionFree(boardValues, userPosition);
-                if (positionFreeCheck)
-                    System.out.println("Free Position!");
-                checkIfValidMove = checkUserMoveIfValidMakeMove(boardValues, userPosition, playerValue);
-                String validityResult = checkIfValidMove ? "Valid move" : "Invalid move";
-                System.out.println(validityResult);
-            } else {
-                computerPosition = computerWinningMoveLogic(boardValues, playerValue);
-                if (computerPosition == 0)
-                    computerPosition = computerBlockingMoveLogic(boardValues, playerValue);
-                if (computerPosition == 0)
-                    computerPosition = computerCornerCaseLogic(boardValues);
-                if (computerPosition == 0)
-                    computerPosition = computerCenterAndSideCaseLogic(boardValues);
-                checkIfValidMove = checkUserMoveIfValidMakeMove(boardValues, computerPosition, playerValue);
+                System.out.println("Please Choose X or 0");
+                char userValue = userInput.next().charAt(0);
+                playerValue = playerChoosesXor0(userValue);
+            } else playerValue = computerChooseXor0();
+            while (playerChances < 10) {
+                if (currentPlayer == "User") {
+                    System.out.println("Please Choose the position to make move");
+                    userPosition = userInput.nextInt();
+                    boolean positionFreeCheck = isPositionFree(boardValues, userPosition);
+                    if (positionFreeCheck)
+                        System.out.println("Free Position!");
+                    checkIfValidMove = checkUserMoveIfValidMakeMove(boardValues, userPosition, playerValue);
+                    String validityResult = checkIfValidMove ? "Valid move" : "Invalid move";
+                    System.out.println(validityResult);
+                } else {
+                    computerPosition = computerWinningMoveLogic(boardValues, playerValue);
+                    if (computerPosition == 0)
+                        computerPosition = computerBlockingMoveLogic(boardValues, playerValue);
+                    if (computerPosition == 0)
+                        computerPosition = computerCornerCaseLogic(boardValues);
+                    if (computerPosition == 0)
+                        computerPosition = computerCenterAndSideCaseLogic(boardValues);
+                    checkIfValidMove = checkUserMoveIfValidMakeMove(boardValues, computerPosition, playerValue);
+                }
+                displayBoard(boardValues);
+                if (playerChances == 9) {
+                    System.out.println("Tied!!!!!");
+                    break;
+                }
+                boolean winningResults = checkIfWinner(boardValues, playerValue);
+                if (winningResults) {
+                    if (currentPlayer == "User")
+                        System.out.println("You Won!!!!!");
+                    else System.out.println("You Lost!!!!!");
+                    break;
+                }
+                player = (player == Player.USER) ? Player.COMPUTER : Player.USER;
+                currentPlayer = (player == Player.USER) ? "User" : "Computer";
+                System.out.println("Current Player:- " + currentPlayer);
+                playerValue = (playerValue == 'X') ? '0' : 'X';
+                playerChances++;
             }
-            displayBoard(boardValues);
-            if(playerChances == 9){
-                System.out.println("Tied!!!!!");
-                break;
-            }
-            boolean winningResults = checkIfWinner(boardValues, playerValue);
-            if (winningResults) {
-                if (currentPlayer == "User")
-                    System.out.println("You Won!!!!!");
-                else System.out.println("You Lost!!!!!");
-                break;
-            }
-            player = (player == Player.USER) ? Player.COMPUTER : Player.USER;
-            currentPlayer = (player == Player.USER) ? "User" : "Computer";
-            System.out.println("Current Player:- " + currentPlayer);
-            playerValue = (playerValue == 'X') ? '0' : 'X';
-            playerChances++;
+            System.out.println("GAME OVER!!!!\nENTER 1 to Play Again\nENTER 0 to Exit");
+            gameAgain = userInput.nextInt();
         }
-        System.out.println("GAME OVER!!!!");
     }
 }
