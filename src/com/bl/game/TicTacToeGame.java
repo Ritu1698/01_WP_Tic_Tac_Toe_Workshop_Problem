@@ -1,5 +1,6 @@
 package com.bl.game;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class TicTacToeGame {
@@ -30,31 +31,44 @@ public class TicTacToeGame {
     }
 
     //Check Valid Move Or Not
-    public static boolean checkUserMove(char[] board, int userPosition) {
-        if (userPosition > 0 && userPosition < board.length && board[userPosition] == ' ')
+    public static boolean checkUserMove(char[] board, int userPosition, char playerValue) {
+        if (userPosition > 0 && userPosition < board.length && board[userPosition] == ' '){
+            board[userPosition] = playerValue;
             return true;
+        }
+
         else
             return false;
+    }
+
+
+    public  static  boolean isPositionFree(char [] board, int userPosition){
+        if(board[userPosition]==' ')
+            return true;
+        else return false;
     }
 
     //Our main function
     public static void main(String[] args) {
         System.out.println("Welcome to tic tac toe Workshop Problem");
-        char[] boardValues = makeBoard();
-        System.out.println("Please Choose X or 0");
+        int i=1;
         Scanner userInput = new Scanner(System.in);
-        char userValue = userInput.next().charAt(0);
-        char playerValue = playerChoosesXor0(userValue);
-        char computerValue = (playerValue == 'X') ? '0' : 'X';
-        System.out.println("Value chosen by Player & Computer are :- " + playerValue + ", " + computerValue);
-        System.out.println("Please Choose the position to make move");
-        int userPosition = userInput.nextInt();
-        boolean checkIfValidMove = checkUserMove(boardValues, userPosition);
-        userInput.close();
-        String validityResult = checkIfValidMove ? "Valid move" : "Invalid move";
-        System.out.println(validityResult);
-        boardValues[userPosition] = checkIfValidMove ? playerValue : ' ';
-        displayBoard(boardValues);
+        while(i<10) {
+            char[] boardValues = makeBoard();
+            System.out.println("Please Choose X or 0");
+            char userValue = userInput.next().charAt(0);
+            char playerValue = playerChoosesXor0(userValue);
+            System.out.println("Please Choose the position to make move");
+            int userPosition = userInput.nextInt();
+            boolean positionFreeCheck = isPositionFree(boardValues,userPosition);
+            System.out.println(positionFreeCheck);
+            boolean checkIfValidMove = checkUserMove(boardValues, userPosition, playerValue);
+            String validityResult = checkIfValidMove ? "Valid move" : "Invalid move";
+            System.out.println(validityResult);
+            displayBoard(boardValues);
+            i++;
+        }
+
 
     }
 }
