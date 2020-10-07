@@ -5,10 +5,7 @@ import java.util.Scanner;
 
 public class TicTacToeGame {
     private static final int HEAD = 1;
-
-    public enum Player {USER, COMPUTER}
-
-    ;
+    public enum Player {USER, COMPUTER};
 
     //Function to create the board
     public static char[] makeBoard() {
