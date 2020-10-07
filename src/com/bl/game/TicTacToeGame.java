@@ -76,9 +76,8 @@ public class TicTacToeGame {
 
     //Logic Behind Computer Move
     public static int computerMoveLogic(char[] board, char playerValue) {
-
-        char[] copyOfBoard = board.clone();
         for (int boardPosition = 1; boardPosition < board.length; boardPosition++) {
+            char[] copyOfBoard = board.clone();
             if (isPositionFree(board, boardPosition)) {
                 checkUserMoveIfValidMakeMove(copyOfBoard, boardPosition, playerValue);
                 if (checkIfWinner(copyOfBoard, playerValue))
