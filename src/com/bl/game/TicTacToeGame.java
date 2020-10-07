@@ -4,6 +4,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class TicTacToeGame {
+    private static final int HEAD = 1;
+
+    public enum Player {USER, COMPUTER}
+
+    ;
 
     //Function to create the board
     public static char[] makeBoard() {
@@ -46,13 +51,23 @@ public class TicTacToeGame {
         else return false;
     }
 
+    //Check Who Starts First
+    private static Player whoStarts() {
+        Random randomValue = new Random();
+        int tossValue = randomValue.nextInt(2);
+        String whoStartName = (tossValue == HEAD) ? "User" : "Computer";
+        System.out.println("Player Fist Chance:- " + whoStartName);
+        return (tossValue == HEAD) ? Player.USER : Player.COMPUTER;
+    }
+
     //Our main function
     public static void main(String[] args) {
         System.out.println("Welcome to tic tac toe Workshop Problem");
         int playerChances = 1;
         Scanner userInput = new Scanner(System.in);
         char[] boardValues = makeBoard();
-        while (playerChances< 10) {
+        Player player = whoStarts();
+        while (playerChances < 10) {
             System.out.println("Please Choose X or 0");
             char userValue = userInput.next().charAt(0);
             char playerValue = playerChoosesXor0(userValue);
@@ -64,6 +79,9 @@ public class TicTacToeGame {
             String validityResult = checkIfValidMove ? "Valid move" : "Invalid move";
             System.out.println(validityResult);
             displayBoard(boardValues);
+            player = (player == Player.USER) ? Player.COMPUTER : Player.USER;
+            String currentPlayer = (player == Player.USER) ? "User" : "Computer";
+            System.out.println("Current Player:- " + currentPlayer);
             playerChances++;
         }
 
