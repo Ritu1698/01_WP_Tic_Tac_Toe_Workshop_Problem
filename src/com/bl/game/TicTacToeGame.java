@@ -95,6 +95,19 @@ public class TicTacToeGame {
         return (userWinningPosition > 0) ? userWinningPosition : 0;
     }
 
+    //Logic Behind Computer Corner Cases
+    public static int computerCornerCaseLogic(char[] board) {
+        if (board[1] == ' ')
+            return 1;
+        else if (board[3] == ' ')
+            return 3;
+        else if (board[7] == ' ')
+            return 7;
+        else if (board[9] == ' ')
+            return 9;
+        else return 0;
+    }
+
     //What value computer chooses
     public static char computerChooseXor0() {
         Random randomValue = new Random();
@@ -132,6 +145,8 @@ public class TicTacToeGame {
                 computerPosition = computerWinningMoveLogic(boardValues, playerValue);
                 if (computerPosition == 0)
                     computerPosition = computerBlockingMoveLogic(boardValues, playerValue);
+                if (computerPosition == 0)
+                    computerPosition = computerCornerCaseLogic(boardValues);
                 checkIfValidMove = checkUserMoveIfValidMakeMove(boardValues, computerPosition, playerValue);
             }
             displayBoard(boardValues);
