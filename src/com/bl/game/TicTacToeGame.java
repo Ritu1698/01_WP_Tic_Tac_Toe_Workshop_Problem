@@ -12,22 +12,22 @@ public class TicTacToeGame {
         return ourBoardValues;
     }  //Function to create the board
 
-    public static char playerChoosesXor0(){
-        System.out.println("Please Choose X or 0");
-        Scanner sc = new Scanner(System.in);
-        char playerValue = sc.next().charAt(0);
-        sc.close();
+    public static char playerChoosesXor0(char userValue){
+       char playerValue = userValue;
         return playerValue;
     } //Function to assign player value
 
-    public static void main (String[] args){
+    public static void main(String[] args){
         System.out.println("Welcome to tic tac toe Workshop Problem");
         char [] boardValues = makeBoard();
-        char playerValue = playerChoosesXor0();
-        char computerValue;
-        if (playerValue == 'X')
-            computerValue = '0';
-        else  computerValue = 'X';
+
+        System.out.println("Please Choose X or 0");
+        Scanner sc = new Scanner(System.in);
+        char userValue = sc.next().charAt(0);
+        sc.close();
+
+        char playerValue = playerChoosesXor0(userValue);
+        char computerValue = (playerValue == 'X') ? '0' : 'X';
         System.out.println("Value chosen by Player & Computer are :- "+playerValue+", "+computerValue);
     } //Our main function
 }
