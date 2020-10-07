@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class TicTacToeGame {
     private static final int HEAD = 1;
+    public static int userPositionReference;
 
     public enum Player {USER, COMPUTER}
 
@@ -74,8 +75,8 @@ public class TicTacToeGame {
         else return false;
     }
 
-    //Logic Behind Computer Move
-    public static int computerMoveLogic(char[] board, char playerValue) {
+    //Logic Behind Computer Winning Move
+    public static int computerWinningMoveLogic(char[] board, char playerValue) {
         for (int boardPosition = 1; boardPosition < board.length; boardPosition++) {
             char[] copyOfBoard = board.clone();
             if (isPositionFree(board, boardPosition)) {
@@ -85,6 +86,13 @@ public class TicTacToeGame {
             }
         }
         return 0;
+    }
+
+    //Logic Behind Computer Blocking Move
+    public static int computerBlockingMoveLogic(char[] board, char playerValue) {
+        char userValue = (playerValue == 'X') ? '0' : 'X';
+        int userWinningPosition = computerWinningMoveLogic(board, userValue);
+        return (userWinningPosition > 0) ? userWinningPosition : 0;
     }
 
     //What value computer chooses
@@ -98,7 +106,7 @@ public class TicTacToeGame {
     //Our main function
     public static void main(String[] args) {
         System.out.println("Welcome to tic tac toe Workshop Problem");
-        int playerChances = 1, userPosition;
+        int playerChances = 1, userPosition, computerPosition;
         boolean checkIfValidMove;
         char playerValue;
         Scanner userInput = new Scanner(System.in);
@@ -121,8 +129,10 @@ public class TicTacToeGame {
                 String validityResult = checkIfValidMove ? "Valid move" : "Invalid move";
                 System.out.println(validityResult);
             } else {
-                userPosition = computerMoveLogic(boardValues, playerValue);
-                checkIfValidMove = checkUserMoveIfValidMakeMove(boardValues, userPosition, playerValue);
+                computerPosition = computerWinningMoveLogic(boardValues, playerValue);
+                if (computerPosition == 0)
+                    computerPosition = computerBlockingMoveLogic(boardValues, playerValue);
+                checkIfValidMove = checkUserMoveIfValidMakeMove(boardValues, computerPosition, playerValue);
             }
             displayBoard(boardValues);
             boolean winningResults = checkIfWinner(boardValues, playerValue);
