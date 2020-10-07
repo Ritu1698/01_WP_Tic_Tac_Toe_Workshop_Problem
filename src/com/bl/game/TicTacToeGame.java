@@ -1,5 +1,7 @@
 package com.bl.game;
 
+import com.sun.deploy.security.SelectableSecurityManager;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -34,7 +36,7 @@ public class TicTacToeGame {
     }
 
     //Check Valid Move Or Not
-    public static boolean checkUserMove(char[] board, int userPosition, char playerValue) {
+    public static boolean checkUserMoveIfValidMakeMove(char[] board, int userPosition, char playerValue) {
         if (userPosition > 0 && userPosition < board.length && board[userPosition] == ' ') {
             board[userPosition] = playerValue;
             return true;
@@ -59,46 +61,82 @@ public class TicTacToeGame {
     }
 
     //Check For Winner
-    public static boolean checkIfWinner(char [] board, char playerValue){
-        if((board[1]== playerValue && board[2]==playerValue && board[3]==playerValue)
-                ||(board[4]== playerValue && board[5]==playerValue && board[6]==playerValue)
-                ||(board[7]== playerValue && board[8]==playerValue && board[9]==playerValue)
-                ||(board[1]== playerValue && board[5]==playerValue && board[9]==playerValue)
-                ||(board[3]== playerValue && board[5]==playerValue && board[7]==playerValue)
-                ||(board[1]== playerValue && board[4]==playerValue && board[7]==playerValue)
-                ||(board[2]== playerValue && board[5]==playerValue && board[8]==playerValue)
-                ||(board[3]== playerValue && board[6]==playerValue && board[9]==playerValue))
+    public static boolean checkIfWinner(char[] board, char playerValue) {
+        if ((board[1] == playerValue && board[2] == playerValue && board[3] == playerValue)
+                || (board[4] == playerValue && board[5] == playerValue && board[6] == playerValue)
+                || (board[7] == playerValue && board[8] == playerValue && board[9] == playerValue)
+                || (board[1] == playerValue && board[5] == playerValue && board[9] == playerValue)
+                || (board[3] == playerValue && board[5] == playerValue && board[7] == playerValue)
+                || (board[1] == playerValue && board[4] == playerValue && board[7] == playerValue)
+                || (board[2] == playerValue && board[5] == playerValue && board[8] == playerValue)
+                || (board[3] == playerValue && board[6] == playerValue && board[9] == playerValue))
             return true;
         else return false;
+    }
+
+    //Logic Behind Computer Move
+    public static int computerMoveLogic(char[] board, char playerValue) {
+
+        char[] copyOfBoard = board.clone();
+        for (int boardPosition = 1; boardPosition < board.length; boardPosition++) {
+            if (isPositionFree(board, boardPosition)) {
+                checkUserMoveIfValidMakeMove(copyOfBoard, boardPosition, playerValue);
+                if (checkIfWinner(copyOfBoard, playerValue))
+                    return boardPosition;
+            }
+        }
+        return 0;
+    }
+
+    //What value computer chooses
+    public static char computerChooseXor0() {
+        Random randomValue = new Random();
+        int randomResult = randomValue.nextInt(2);
+        char computerValue = (randomResult == 0) ? 'X' : '0';
+        return computerValue;
     }
 
     //Our main function
     public static void main(String[] args) {
         System.out.println("Welcome to tic tac toe Workshop Problem");
-        int playerChances = 1;
+        int playerChances = 1, userPosition;
+        boolean checkIfValidMove;
+        char playerValue;
         Scanner userInput = new Scanner(System.in);
         char[] boardValues = makeBoard();
         Player player = whoStarts();
-        System.out.println("Please Choose X or 0");
-        char userValue = userInput.next().charAt(0);
-        char playerValue = playerChoosesXor0(userValue);
+        String currentPlayer = (player == Player.USER) ? "User" : "Computer";
+        if (currentPlayer == "User") {
+            System.out.println("Please Choose X or 0");
+            char userValue = userInput.next().charAt(0);
+            playerValue = playerChoosesXor0(userValue);
+        } else playerValue = computerChooseXor0();
         while (playerChances < 10) {
-            System.out.println("Please Choose the position to make move");
-            int userPosition = userInput.nextInt();
-            boolean positionFreeCheck = isPositionFree(boardValues, userPosition);
-            if (positionFreeCheck)
-            System.out.println("Free Position!");
-            boolean checkIfValidMove = checkUserMove(boardValues, userPosition, playerValue);
-            String validityResult = checkIfValidMove ? "Valid move" : "Invalid move";
-            System.out.println(validityResult);
+            if (currentPlayer == "User") {
+                System.out.println("Please Choose the position to make move");
+                userPosition = userInput.nextInt();
+                boolean positionFreeCheck = isPositionFree(boardValues, userPosition);
+                if (positionFreeCheck)
+                    System.out.println("Free Position!");
+                checkIfValidMove = checkUserMoveIfValidMakeMove(boardValues, userPosition, playerValue);
+                String validityResult = checkIfValidMove ? "Valid move" : "Invalid move";
+                System.out.println(validityResult);
+            } else {
+                userPosition = computerMoveLogic(boardValues, playerValue);
+                checkIfValidMove = checkUserMoveIfValidMakeMove(boardValues, userPosition, playerValue);
+            }
             displayBoard(boardValues);
             boolean winningResults = checkIfWinner(boardValues, playerValue);
-            if(winningResults) {
-                System.out.println("You Won!!!!!");
+            if (winningResults) {
+                if (currentPlayer == "User")
+                    System.out.println("You Won!!!!!");
+                else System.out.println("You Lost!!!!!");
                 break;
             }
-            String currentPlayer = (player == Player.USER) ? "User" : "Computer";
+            player = (player == Player.USER) ? Player.COMPUTER : Player.USER;
+            currentPlayer = (player == Player.USER) ? "User" : "Computer";
             System.out.println("Current Player:- " + currentPlayer);
+            playerValue = (playerValue == 'X') ? '0' : 'X';
             playerChances++;
         }
     }
