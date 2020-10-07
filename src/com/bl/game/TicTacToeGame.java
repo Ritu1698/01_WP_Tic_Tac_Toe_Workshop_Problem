@@ -8,8 +8,6 @@ public class TicTacToeGame {
 
     public enum Player {USER, COMPUTER}
 
-    ;
-
     //Function to create the board
     public static char[] makeBoard() {
         char[] ourBoardValues = new char[10];
@@ -52,12 +50,26 @@ public class TicTacToeGame {
     }
 
     //Check Who Starts First
-    private static Player whoStarts() {
+    public static Player whoStarts() {
         Random randomValue = new Random();
         int tossValue = randomValue.nextInt(2);
         String whoStartName = (tossValue == HEAD) ? "User" : "Computer";
         System.out.println("Player Fist Chance:- " + whoStartName);
         return (tossValue == HEAD) ? Player.USER : Player.COMPUTER;
+    }
+
+    //Check For Winner
+    public static boolean checkIfWinner(char [] board, char playerValue){
+        if((board[1]== playerValue && board[2]==playerValue && board[3]==playerValue)
+                ||(board[4]== playerValue && board[5]==playerValue && board[6]==playerValue)
+                ||(board[7]== playerValue && board[8]==playerValue && board[9]==playerValue)
+                ||(board[1]== playerValue && board[5]==playerValue && board[9]==playerValue)
+                ||(board[3]== playerValue && board[5]==playerValue && board[7]==playerValue)
+                ||(board[1]== playerValue && board[4]==playerValue && board[7]==playerValue)
+                ||(board[2]== playerValue && board[5]==playerValue && board[8]==playerValue)
+                ||(board[3]== playerValue && board[6]==playerValue && board[9]==playerValue))
+            return true;
+        else return false;
     }
 
     //Our main function
@@ -74,15 +86,19 @@ public class TicTacToeGame {
             System.out.println("Please Choose the position to make move");
             int userPosition = userInput.nextInt();
             boolean positionFreeCheck = isPositionFree(boardValues, userPosition);
-            System.out.println(positionFreeCheck);
+            if (positionFreeCheck)
+            System.out.println("Free Position!");
             boolean checkIfValidMove = checkUserMove(boardValues, userPosition, playerValue);
             String validityResult = checkIfValidMove ? "Valid move" : "Invalid move";
             System.out.println(validityResult);
             displayBoard(boardValues);
-            player = (player == Player.USER) ? Player.COMPUTER : Player.USER;
+            boolean winningResults = checkIfWinner(boardValues, playerValue);
+            if(winningResults) {
+                System.out.println("You Won!!!!!");
+                break;
+            }
             String currentPlayer = (player == Player.USER) ? "User" : "Computer";
             System.out.println("Current Player:- " + currentPlayer);
-            playerValue = (playerValue == 'X') ? '0' : 'X';
             playerChances++;
         }
     }
