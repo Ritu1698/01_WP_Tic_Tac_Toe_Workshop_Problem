@@ -165,6 +165,10 @@ public class TicTacToeGame {
                 checkIfValidMove = checkUserMoveIfValidMakeMove(boardValues, computerPosition, playerValue);
             }
             displayBoard(boardValues);
+            if(playerChances == 9){
+                System.out.println("Tied!!!!!");
+                break;
+            }
             boolean winningResults = checkIfWinner(boardValues, playerValue);
             if (winningResults) {
                 if (currentPlayer == "User")
@@ -178,5 +182,6 @@ public class TicTacToeGame {
             playerValue = (playerValue == 'X') ? '0' : 'X';
             playerChances++;
         }
+        System.out.println("GAME OVER!!!!");
     }
 }
