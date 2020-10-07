@@ -32,18 +32,15 @@ public class TicTacToeGame {
 
     //Check Valid Move Or Not
     public static boolean checkUserMove(char[] board, int userPosition, char playerValue) {
-        if (userPosition > 0 && userPosition < board.length && board[userPosition] == ' '){
+        if (userPosition > 0 && userPosition < board.length && board[userPosition] == ' ') {
             board[userPosition] = playerValue;
             return true;
-        }
-
-        else
+        } else
             return false;
     }
 
-
-    public  static  boolean isPositionFree(char [] board, int userPosition){
-        if(board[userPosition]==' ')
+    public static boolean isPositionFree(char[] board, int userPosition) {
+        if (board[userPosition] == ' ')
             return true;
         else return false;
     }
@@ -51,16 +48,16 @@ public class TicTacToeGame {
     //Our main function
     public static void main(String[] args) {
         System.out.println("Welcome to tic tac toe Workshop Problem");
-        int i=1;
+        int i = 1;
         Scanner userInput = new Scanner(System.in);
-        while(i<10) {
-            char[] boardValues = makeBoard();
+        char[] boardValues = makeBoard();
+        while (i < 10) {
             System.out.println("Please Choose X or 0");
             char userValue = userInput.next().charAt(0);
             char playerValue = playerChoosesXor0(userValue);
             System.out.println("Please Choose the position to make move");
             int userPosition = userInput.nextInt();
-            boolean positionFreeCheck = isPositionFree(boardValues,userPosition);
+            boolean positionFreeCheck = isPositionFree(boardValues, userPosition);
             System.out.println(positionFreeCheck);
             boolean checkIfValidMove = checkUserMove(boardValues, userPosition, playerValue);
             String validityResult = checkIfValidMove ? "Valid move" : "Invalid move";
@@ -68,7 +65,6 @@ public class TicTacToeGame {
             displayBoard(boardValues);
             i++;
         }
-
 
     }
 }
