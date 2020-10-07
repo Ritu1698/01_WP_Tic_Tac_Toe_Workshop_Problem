@@ -39,6 +39,7 @@ public class TicTacToeGame {
             return false;
     }
 
+    //Check Position is Free Or Not
     public static boolean isPositionFree(char[] board, int userPosition) {
         if (board[userPosition] == ' ')
             return true;
@@ -48,10 +49,10 @@ public class TicTacToeGame {
     //Our main function
     public static void main(String[] args) {
         System.out.println("Welcome to tic tac toe Workshop Problem");
-        int i = 1;
+        int playerChances = 1;
         Scanner userInput = new Scanner(System.in);
         char[] boardValues = makeBoard();
-        while (i < 10) {
+        while (playerChances< 10) {
             System.out.println("Please Choose X or 0");
             char userValue = userInput.next().charAt(0);
             char playerValue = playerChoosesXor0(userValue);
@@ -63,7 +64,7 @@ public class TicTacToeGame {
             String validityResult = checkIfValidMove ? "Valid move" : "Invalid move";
             System.out.println(validityResult);
             displayBoard(boardValues);
-            i++;
+            playerChances++;
         }
 
     }
