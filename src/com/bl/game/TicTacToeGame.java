@@ -24,6 +24,6 @@ public class TicTacToeGame {
         System.out.println("Welcome to tic tac toe Workshop Problem");
         char [] boardValues = makeBoard();
         char playerValue = playerChoosesXor0();
-        System.out.println(playerValue);
+        System.out.println("Value chosen by Player is :- "+playerValue);
     } //Our main function
 }
